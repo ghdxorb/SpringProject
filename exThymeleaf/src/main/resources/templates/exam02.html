@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>DTO 출력 테스트</h3>
+	부서번호 : <span th:text="${deptDTO.dno}"></span><br>
+	부서명 :<span th:text="${deptDTO.dname}"> </span><br>
+	지역명 :<span th:text="${deptDTO.loc}"> </span><br>
+	<hr>
+	
+	<b th:object="${deptDTO}">
+		부서번호 : <span th:text="*{dno}"></span>  <br>
+		부서명 :  <span th:text="*{dname}"></span><br>
+		지역명 :  <span th:text="*{loc}"></span><br>
+	</b>
+	
+</body>
+</html>

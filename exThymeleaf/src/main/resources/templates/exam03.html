@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border=1 width=200>
+		<tr>
+			<td colspan=2>부서정보</td>
+		</tr>
+		<tr>
+			<td>부서번호</td><td th:text="${deptDTO.dno}"> </td>
+		</tr>
+		<tr>
+			<td>부서명</td><td th:text="${deptDTO.dname}"></td>
+		</tr>
+		<tr>
+			<td>지역명</td><td th:text="${deptDTO.loc}"></td>
+		</tr>
+	</table>
+	<hr>
+	<table border=1 width=200 th:object="${deptDTO}">
+		<tr>
+			<td colspan=2>부서정보</td>
+		</tr>
+		<tr>
+			<td>부서번호</td><td th:text="*{dno}"> </td>
+		</tr>
+		<tr>
+			<td>부서명</td><td th:text="*{dname}"></td>
+		</tr>
+		<tr>
+			<td>지역명</td><td th:text="*{loc}"></td>
+		</tr>
+	</table>
+	
+</body>
+</html>

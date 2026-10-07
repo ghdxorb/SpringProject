@@ -11,7 +11,6 @@
      th, td {
   		padding: 5px 5px; /* 위아래 12px, 좌우 10px */
 	 }
-     
    </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
@@ -48,7 +47,7 @@ $(function(){
 			type:"post",
 			data:{"userid":userid},
 			success:function(result){
-				if(result=='false'){
+				if(result==0){
 					userID_c.innerHTML="사용 가능한 아이디입니다";
 				}else{
 					userID_c.innerHTML="이미 사용중인 아이디입니다";
@@ -154,34 +153,8 @@ $(function(){
 	// 유효성 검사후 등록하기
 	//유효성 검사
 	$("#userSend").click(function(){
-		if($("#name").val()==''){
-			alert("이름을 입력하세요.");
-			$("#name").focus();
-			return;
-		}
-		//ID검사
-		if($("#userid").val()==''){
-			alert("id를 입력하세요.");
-			$("#userid").focus();
-			return;
-		}
-		//Pass
-		if($("#passwd").val()==''){
-			alert("비밀번호를 입력하세요.");
-			$("#passwd").focus();
-			return;
-		}
-		if($("#repasswd").val()==''){
-			alert("비밀번호확인을 입력하세요.");
-			$("#repasswd").focus();
-			return;
-		}
-		//tel
-		if($("#tel").val()==''){
-			alert("전화번호를 입력하세요.");
-			$("#tel").focus();
-			return;
-		}
+		
+		
 		$("#user").submit();
 	});
 
@@ -205,7 +178,7 @@ $(function(){
 	<th:block th:replace="~{Include/login_form}"></th:block>
   </td>
   <td width="80%" valign="top">&nbsp;<img src="/Images/img/title1.gif" ><br>    
-	<form name="user" id="user" method=post action="/User/user_insert">
+	<form name="user" id="user" method=post action="/User/user_insert" th:object="${userRequestDTO}">
 	<input type="hidden" id="usersms" name="usersms"><!-- 전송된 인증번호 보관용 -->
 	<input type="hidden" id="useremail" name="useremail"><!-- 전송된 이메일 인증번호 보관용  -->
 	<input type="hidden" id="email" name="email"><!-- @로 결합된 이메일 전송용  -->
@@ -226,7 +199,8 @@ $(function(){
 							<tr>
 								<td width=110 bgcolor=#EFF4F8>&nbsp;회원 성명<font color=red>&nbsp;*</font></td>
 								<TD BGCOLOR=WHITE>
-									<input type=text id=name name=name size=16 maxlength=20 value="" placeholder="성명은 빈칸없이 입력하세요.">
+									<input type=text id=name name=name th:field="*{name}" size=16 maxlength=20 value="" placeholder="성명은 빈칸없이 입력하세요.">
+									<font color=red th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></font>
 								</td>
 							</tr>
 							<tr>
@@ -235,11 +209,16 @@ $(function(){
 									<table cellspacing=0 cellpadding=0>
 										<tr>
 											<td align=absmiddle>
-												<input type=text id=userid name=userid size=12 maxlength=16 value="" style="width:120">
+												<input type=text id=userid name=userid th:field="*{userid}" size=12 maxlength=16 value="" style="width:120">
 											</td>
 											<td id="userID_c">
-                  								[ 5~16자 이내의 영문이나 숫자만 가능합니다. ]
+											<!-- 에러가 없을 때만 안내 문구를 보여줍니다 -->
+    												<span th:unless="${#fields.hasErrors('userid')}">[ 5~16자 이내의 영문이나 숫자만 가능합니다. ]</span>
+    
+    											<!-- 에러가 있을 때만 에러 메시지를 보여줍니다 -->
+    												<font color="red" th:if="${#fields.hasErrors('userid')}" th:errors="*{userid}"></font> 
                   							</td>
+                  							
 										</tr>
 									</table>
 								</td>
@@ -247,8 +226,10 @@ $(function(){
 							<tr>
 								<TD BGCOLOR="#EFF4F8">&nbsp;비밀번호<font color=red>&nbsp;*</font></td>
 								<TD BGCOLOR=WHITE>
-								<input type=password id=passwd name=passwd size=8 maxlength=12 style="width:80">
-									6~12자 이내의 영문이나 숫자만 가능합니다.
+								<input type=password id=passwd name=passwd th:field="*{passwd}" size=8 maxlength=12 style="width:80">
+								<!-- 에러가 없을 때만 안내 문구를 보여줍니다 -->
+    									<span th:unless="${#fields.hasErrors('passwd')}">[ 6~12자 이내의 영문이나 숫자만 가능합니다.]</span>
+									<font color=red th:if="${#fields.hasErrors('passwd')}" th:errors="*{passwd}"></font>	
 								</td>
 							</tr>
 							<tr>
@@ -266,7 +247,7 @@ $(function(){
 							<tr id="phone">
 								<TD BGCOLOR="#EFF4F8">&nbsp;전화번호<font color=red>&nbsp;*</font></td>
 								<TD BGCOLOR=WHITE>
-									<input type=text id=tel name=tel size=13 maxlength=13 value="" placeholder="휴대전화번호 (-제외)">
+									<input type=text id=tel name=tel th:field="*{tel}" size=13 maxlength=13 value="" placeholder="휴대전화번호 (-제외)">
 									<input type="button" id="phoneBtn1" value="인증번호받기">
 									<font id="phone_c" size="2" color="red">&nbsp;</font>
 								</td>
@@ -285,7 +266,7 @@ $(function(){
                 					<font color=red>&nbsp;</font>
 								</td>
 								<td bgcolor=WHITE valign=middle>
-									<input type="text" name="email1" id="email1" size=10 maxlength="15">
+									<input type="text" name="email1" id="email1" th:field="*{email}" size=10 maxlength="15">
 									@ <input type="text" name="email2" id="email2" size=10 maxlength="15">
 									<select name="email3" id="email3">
 		      							<option value="0">직접입력</option>

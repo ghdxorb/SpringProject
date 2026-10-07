@@ -1,5 +1,6 @@
 package com.mnu.sample.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
-	private UserRepository userRepository;
+	@Autowired
+	private final UserRepository userRepository;
 	
 	//id중복 검사 - 1
 	public int userIdCheck1(String userid) {

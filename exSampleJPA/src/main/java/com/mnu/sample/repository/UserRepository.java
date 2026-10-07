@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 	UserEntity findByUserid(String userid);
 	
 	//2.id중복검사
-	boolean existsByUserid(String userid);//userid 존재 유무
+	boolean existsByUserid(String userid);//userid 존재하면(true)
 	
 	
 	//3. 회원가입
